@@ -1,95 +1,55 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+"use client"
+import { Button, Input, Stack, Text } from '@chakra-ui/react'
+import React, { useState } from 'react'
+import MyMessage from './components/MyMessage'
 
 export default function Home() {
+  const [messageInput,setMessegeInput] =useState('');
+  const [messages,setMesseges] =useState([
+    {
+      message:'hello'
+    },
+    {
+      message:'hello'
+    },
+    {
+      message:'hello'
+    },
+    {
+      message:'saikat'
+    },
+  ])
+const onBtnClick=()=>{
+  if (messageInput.trim() !=='') {
+    setMesseges([...messages,{message:messageInput}])
+    setMessegeInput('');
+  }
+  console.log(messageInput)
+};
+  const messagearray=[
+
+  ]
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+    <Stack bg={"green"} h={'100vh'}>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+      <Stack flex={1} p={4} justify={'end'}>
+        {/* <Stack align={'flex-start'}>
+          <Stack bg={'white'} width={'450px'} p={4} rounded={'xl'} shadow={'lg'}>
+            <Text>How are you</Text>
+          </Stack>
+        </Stack> */}
+        {messages.map((item,index)=>{
+          return(
+            <MyMessage message={item.message} key={index}/>
+          )
+        })}
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+      </Stack>
+      <Stack flexDir={'row'} bg={'white'} p={2}>
+        <Input placeholder='Enter your message' value={messageInput} onChange={(e)=>setMessegeInput(e.target.value)}/>
+        <Button colorScheme={'green'} onClick={()=>onBtnClick()}> 
+        Send </Button>
+      </Stack>
+    </Stack>
   )
 }
