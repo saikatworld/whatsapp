@@ -1,55 +1,79 @@
-"use client"
+'use client'
 import { Button, Input, Stack, Text } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import MyMessage from './components/MyMessage'
 
 export default function Home() {
-  const [messageInput,setMessegeInput] =useState('');
-  const [messages,setMesseges] =useState([
+  const [messageInput, setMessageInput] = useState('');
+  const [messages, setMessages] = useState([
     {
-      message:'hello'
+      message: 'hi',
     },
     {
-      message:'hello'
+      message: 'hi how r u',
     },
     {
-      message:'hello'
+      message: 'hi',
     },
-    {
-      message:'saikat'
-    },
-  ])
-const onBtnClick=()=>{
-  if (messageInput.trim() !=='') {
-    setMesseges([...messages,{message:messageInput}])
-    setMessegeInput('');
-  }
-  console.log(messageInput)
-};
-  const messagearray=[
+  ]);
 
-  ]
+  const submitBtn = () => {
+    if (messageInput.trim() !== '') {
+      setMessages([...messages, { message: messageInput }]);
+      setMessageInput('');
+    }
+  };
+  const messagesContainerRef = useRef(null);
+  useEffect(() => {
+    // Scroll to the end of the messages container
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
+  const handleKeyPress = (e) => {
+    // Check if the pressed key is Enter (key code 13)
+    if (e.key === 'Enter') {
+      submitBtn();
+    }
+  };
+
   return (
-    <Stack bg={"green"} h={'100vh'}>
-
-      <Stack flex={1} p={4} justify={'end'}>
-        {/* <Stack align={'flex-start'}>
-          <Stack bg={'white'} width={'450px'} p={4} rounded={'xl'} shadow={'lg'}>
-            <Text>How are you</Text>
-          </Stack>
-        </Stack> */}
-        {messages.map((item,index)=>{
-          return(
-            <MyMessage message={item.message} key={index}/>
-          )
-        })}
-
+    <Stack
+      h={'100vh'}
+    flex={1}
+    >
+      <Stack
+        flex={1}
+        height={'100vh'}
+        p={4}
+        // justify={'end'}
+        // bg={'green'}
+        bgImage={'/bg.jpg'}
+        overflowY={'scroll'}
+        ref={messagesContainerRef}
+      >
+        {messages.map((item, index) => (
+          <MyMessage message={item.message} key={index} />
+        ))}
       </Stack>
-      <Stack flexDir={'row'} bg={'white'} p={2}>
-        <Input placeholder='Enter your message' value={messageInput} onChange={(e)=>setMessegeInput(e.target.value)}/>
-        <Button colorScheme={'green'} onClick={()=>onBtnClick()}> 
-        Send </Button>
+      <Stack
+        flexDir={'row'}
+        bg={'white'}
+        p={2}
+        // flex={1}
+      >
+        <Input
+          placeholder='Enter your message'
+          value={messageInput}
+          onChange={(e) => setMessageInput(e.target.value)}
+          onKeyPress={handleKeyPress}
+          // border={'none'}
+          // variant={'unstyled'}
+        />
+        <Button colorScheme={'green'} onClick={() => submitBtn()}>
+          Submit
+        </Button>
       </Stack>
     </Stack>
-  )
+  );
 }
